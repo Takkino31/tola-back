@@ -37,10 +37,13 @@ public class User implements UserDetails {
     private String email;
 
     @Column(unique = true, length = 50, nullable = false)
-    private String username; // Ajout du champ username
+    private String username;
 
     @Column(nullable = false)
     private String password;
+    
+    @Column(nullable = false)
+    private String role;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -157,6 +160,15 @@ public class User implements UserDetails {
         return this;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public User setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -187,6 +199,7 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

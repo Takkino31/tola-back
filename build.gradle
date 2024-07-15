@@ -15,11 +15,14 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+        url "https://maven.aliyun.com/repository/public"
+    }
 }
 
 dependencies {
 
-	 implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-web'
     implementation 'org.springframework.security:spring-security-config'
     implementation 'org.springframework.security:spring-security-core'
