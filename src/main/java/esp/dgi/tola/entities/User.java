@@ -1,5 +1,6 @@
 package esp.dgi.tola.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,14 +10,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-@Table(name = "users")
 @Entity
+@Table(name = "users")
+@JsonIgnoreProperties({"questions"})
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Integer id;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String firstName;
@@ -36,12 +43,9 @@ public class User implements UserDetails {
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
-    @Column(unique = true, length = 50, nullable = false)
-    private String username;
-
     @Column(nullable = false)
     private String password;
-    
+
     @Column(nullable = false)
     private String role;
 
@@ -52,6 +56,10 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
+    private Set<Question> questions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,6 +73,11 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     @Override
@@ -150,11 +163,6 @@ public class User implements UserDetails {
         return this;
     }
 
-    public User setUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
     public User setPassword(String password) {
         this.password = password;
         return this;
@@ -187,21 +195,31 @@ public class User implements UserDetails {
         return this;
     }
 
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public User setQuestions(Set<Question> questions) {
+        this.questions = questions;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", studentNumber='" + studentNumber + '\'' +
                 ", department='" + department + '\'' +
                 ", specialty='" + specialty + '\'' +
                 ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", questions=" + questions +
                 '}';
     }
 }
