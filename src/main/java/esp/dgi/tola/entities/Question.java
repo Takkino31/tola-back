@@ -25,7 +25,7 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "questions"})
     private User user;
 
     // Getters and setters
@@ -68,16 +68,5 @@ public class Question {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", question='" + question + '\'' +
-                ", dateAsked=" + dateAsked +
-                ", user=" + user +
-                '}';
     }
 }

@@ -1,7 +1,7 @@
 package esp.dgi.tola.controllers;
 
-import esp.dgi.tola.entities.Question;
 import esp.dgi.tola.dtos.QuestionDto;
+import esp.dgi.tola.dtos.QuestionResponseDto;
 import esp.dgi.tola.services.QuestionService;
 import esp.dgi.tola.services.JwtService;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,30 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<Question> addQuestion(@RequestBody QuestionDto questionDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<QuestionResponseDto> addQuestion(@RequestBody QuestionDto questionDto, @RequestHeader("Authorization") String token) {
         String username = jwtService.extractUsername(token.substring(7));
-        Question question = questionService.addQuestion(questionDto, username);
+        QuestionResponseDto question = questionService.addQuestion(questionDto, username);
         return ResponseEntity.ok(question);
     }
 
     @GetMapping
-    public ResponseEntity<List<Question>> getAllQuestions() {
-        return ResponseEntity.ok(questionService.getAllQuestions());
+    public ResponseEntity<List<QuestionResponseDto>> getAllQuestions() {
+        List<QuestionResponseDto> questions = questionService.getAllQuestions();
+        System.out.println("Fetched questions: " + questions); // Log statement
+        return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
-        return ResponseEntity.ok(questionService.getQuestionById(id));
+    public ResponseEntity<QuestionResponseDto> getQuestionById(@PathVariable Long id) {
+        QuestionResponseDto question = questionService.getQuestionById(id);
+        System.out.println("Fetched question: " + question); // Log statement
+        return ResponseEntity.ok(question);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Question> updateQuestion(@PathVariable Long id, @RequestBody QuestionDto questionDto) {
-        return ResponseEntity.ok(questionService.updateQuestion(id, questionDto));
+    public ResponseEntity<QuestionResponseDto> updateQuestion(@PathVariable Long id, @RequestBody QuestionDto questionDto) {
+        QuestionResponseDto updatedQuestion = questionService.updateQuestion(id, questionDto);
+        return ResponseEntity.ok(updatedQuestion);
     }
 
     @DeleteMapping("/{id}")
