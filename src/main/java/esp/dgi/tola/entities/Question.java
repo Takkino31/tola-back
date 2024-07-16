@@ -1,10 +1,12 @@
 package esp.dgi.tola.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -27,6 +29,11 @@ public class Question {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "questions"})
     private User user;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnoreProperties({"question"})
+    private Set<Reponse> reponses;
 
     // Getters and setters
 
@@ -68,5 +75,13 @@ public class Question {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Reponse> getReponses() {
+        return reponses;
+    }
+
+    public void setReponses(Set<Reponse> reponses) {
+        this.reponses = reponses;
     }
 }
