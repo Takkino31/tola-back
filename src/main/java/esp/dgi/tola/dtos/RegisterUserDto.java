@@ -8,10 +8,12 @@ public class RegisterUserDto {
     private String department;
     private String specialty;
     private String email;
-    private String username; // Ajout du champ username
+    private String username;
     private String password;
+    private String role;  // Ajout du champ role
 
-    // Getters and setters...
+    // Getters et setters...
+
     public String getFullName() {
         return fullName;
     }
@@ -93,6 +95,15 @@ public class RegisterUserDto {
         return this;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public RegisterUserDto setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "RegisterUserDto{" +
@@ -105,6 +116,7 @@ public class RegisterUserDto {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
