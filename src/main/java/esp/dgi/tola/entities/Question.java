@@ -1,7 +1,6 @@
 package esp.dgi.tola.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -27,13 +26,16 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "questions"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @JsonIgnoreProperties({"question"})
-    private Set<Reponse> reponses;
+    @ManyToMany
+    @JoinTable(
+        name = "question_tags",
+        joinColumns = @JoinColumn(name = "question_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
 
     // Getters and setters
 
@@ -77,11 +79,11 @@ public class Question {
         this.user = user;
     }
 
-    public Set<Reponse> getReponses() {
-        return reponses;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
-    public void setReponses(Set<Reponse> reponses) {
-        this.reponses = reponses;
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }
